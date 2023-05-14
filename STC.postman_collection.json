@@ -1,0 +1,193 @@
+{
+	"info": {
+		"_postman_id": "8340cac4-cb6b-4e47-8252-c6886c26b60f",
+		"name": "STC task Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create Space",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Admin-space-1\",\r\n    \"userEmail\":\"mary@gmail.com\",\r\n    \"permissionGroupId\":1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/Spaces",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"Spaces"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create folder authorized user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Admin-Folder-1\",\r\n    \"userEmail\":\"mary@gmail.com\",\r\n    \"permissionGroupId\":1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/spaces/1/folders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"spaces",
+						"1",
+						"folders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create folder unauthorized user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Admin-Folder-1\",\r\n    \"userEmail\":\"john@gmail.com\",\r\n    \"permissionGroupId\":1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/spaces/1/folders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"spaces",
+						"1",
+						"folders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upload file authorized user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "file.png",
+							"type": "default"
+						},
+						{
+							"key": "userEmail",
+							"value": "mary@gmail.com",
+							"type": "default"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/moamen.hossam/OneDrive - ITWorx/Documents/copy-Error.PNG"
+						},
+						{
+							"key": "permissionGroupId",
+							"value": "1",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/spaces/1/folders/2/files",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"spaces",
+						"1",
+						"folders",
+						"2",
+						"files"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upload file un-authorized user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "file.png",
+							"type": "default"
+						},
+						{
+							"key": "userEmail",
+							"value": "rod@gmail.com",
+							"type": "default"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/moamen.hossam/OneDrive - ITWorx/Documents/copy-Error.PNG"
+						},
+						{
+							"key": "permissionGroupId",
+							"value": "2",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/spaces/1/folders/2/files",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"spaces",
+						"1",
+						"folders",
+						"2",
+						"files"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
