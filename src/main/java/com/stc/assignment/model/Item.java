@@ -1,6 +1,6 @@
 package com.stc.assignment.model;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 public class Item {

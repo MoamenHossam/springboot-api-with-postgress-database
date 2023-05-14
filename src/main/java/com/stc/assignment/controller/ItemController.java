@@ -7,15 +7,18 @@ import com.stc.assignment.service.FileService;
 import com.stc.assignment.service.ItemService;
 import com.stc.assignment.service.PermissionGroupService;
 import com.stc.assignment.service.PermissionService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.EntityNotFoundException;
-import javax.validation.Valid;
 import java.io.IOException;
-
+@RequestMapping("/")
 @RestController
 public class ItemController {
     @Autowired
@@ -34,7 +37,7 @@ public class ItemController {
         return new ResponseEntity<Item>(HttpStatus.OK);
     }
     @PostMapping("/spaces/{spaceId}/folders")
-    public ResponseEntity createFolder(@RequestBody @Valid SpaceFolderRequest folderRequest, @PathVariable Long spaceId)throws EntityNotFoundException {
+    public ResponseEntity createFolder(@RequestBody  @Valid SpaceFolderRequest folderRequest, @PathVariable Long spaceId)throws EntityNotFoundException {
         Item parent = itemService.findItemById(spaceId);
         if(!permissionService.havePermissionToEdit(folderRequest.getUserEmail(),parent.getPermissionGroup().getId())) throw new PermissionDeniedException();
         Item folderItem = new Item(ItemType.FOLDER,folderRequest.getName(),permissionGroupService.getGroupById(folderRequest.getPermissionGroup()),spaceId);
