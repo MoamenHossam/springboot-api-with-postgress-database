@@ -654,6 +654,85 @@
 					"body": "don't have sufficient permissions to create item under this Folder/Space"
 				}
 			]
+		},
+		{
+			"name": "graphql get authorized files",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "\r\nquery{authorizedFiles(userEmail: \"mary@gmail.com\") {\r\n  id\r\n  item{\r\n    id\r\n    name\r\n    permissionGroup{\r\n      id\r\n      groupName\r\n    }\r\n  }\r\n}}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "graphql get authorized files",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "\r\nquery{authorizedFiles(userEmail: \"mary@gmail.com\") {\r\n  id\r\n  item{\r\n    id\r\n    name\r\n    permissionGroup{\r\n      id\r\n      groupName\r\n    }\r\n  }\r\n}}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 14 May 2023 16:48:12 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"authorizedFiles\": [\n            {\n                \"id\": \"1\",\n                \"item\": {\n                    \"id\": \"6\",\n                    \"name\": \"MoamenHossam.pdf\",\n                    \"permissionGroup\": {\n                        \"id\": \"1\",\n                        \"groupName\": \"admin\"\n                    }\n                }\n            }\n        ]\n    }\n}"
+				}
+			]
 		}
 	]
 }
