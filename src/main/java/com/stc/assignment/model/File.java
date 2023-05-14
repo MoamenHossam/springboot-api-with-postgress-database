@@ -1,14 +1,16 @@
 package com.stc.assignment.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.util.Arrays;
 import java.util.Objects;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class File {
     @Id
-    @Column(name = "id")
+    @Column(name = "file_id")
     @SequenceGenerator(
             name = "file_sequence",
             sequenceName = "file_sequence",

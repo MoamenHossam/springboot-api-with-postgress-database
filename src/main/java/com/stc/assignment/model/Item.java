@@ -1,8 +1,10 @@
 package com.stc.assignment.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Item {
     @Id
     @SequenceGenerator(
@@ -30,6 +32,9 @@ public class Item {
     @Column(name = "parent_id",nullable = true)
     private Long parentID;
 
+    public void setId(Long id) {
+        Id = id;
+    }
 
     public Long getId() {
         return Id;

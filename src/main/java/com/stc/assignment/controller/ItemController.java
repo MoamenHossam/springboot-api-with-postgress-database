@@ -34,15 +34,15 @@ public class ItemController {
     public ResponseEntity<Item> createSpace(@RequestBody @Valid SpaceFolderRequest spaceRequest){
         Item item = new Item(ItemType.SPACE,spaceRequest.getName(),permissionGroupService.getGroupById(spaceRequest.getPermissionGroup()),null);
         itemService.createItem(item);
-        return new ResponseEntity<Item>(HttpStatus.OK);
+        return new ResponseEntity<Item>(item,HttpStatus.OK);
     }
     @PostMapping("/spaces/{spaceId}/folders")
-    public ResponseEntity createFolder(@RequestBody  @Valid SpaceFolderRequest folderRequest, @PathVariable Long spaceId)throws EntityNotFoundException {
+    public ResponseEntity<Item> createFolder(@RequestBody  @Valid SpaceFolderRequest folderRequest, @PathVariable Long spaceId)throws EntityNotFoundException {
         Item parent = itemService.findItemById(spaceId);
         if(!permissionService.havePermissionToEdit(folderRequest.getUserEmail(),parent.getPermissionGroup().getId())) throw new PermissionDeniedException();
         Item folderItem = new Item(ItemType.FOLDER,folderRequest.getName(),permissionGroupService.getGroupById(folderRequest.getPermissionGroup()),spaceId);
         itemService.createItem(folderItem );
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<Item>(folderItem,HttpStatus.OK);
     }
     @PostMapping("/spaces/{spaceId}/folders/{folderId}/files")
     public ResponseEntity<File> createFile(
@@ -59,7 +59,7 @@ public class ItemController {
         itemService.createItem(fileItem);
         File file1 = new File(file.getBytes(),fileItem);
         fileService.createFile(file1);
-        return new ResponseEntity<File>(HttpStatus.OK);
+        return new ResponseEntity<File>(file1,HttpStatus.OK);
     }
     @GetMapping("/files/{fileId}/download/{userEmail}")
     public ResponseEntity<byte[]> downloadFile(@PathVariable Long fileId,@PathVariable String userEmail) {
