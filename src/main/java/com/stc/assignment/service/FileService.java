@@ -18,5 +18,7 @@ public class FileService {
     public void createFile(File file){
         fileRepository.save(file);
     }
-
+    public File getFileById(Long fileId){
+        return fileRepository.getOne(fileId);
+    }
 }

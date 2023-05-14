@@ -7,16 +7,18 @@ import com.stc.assignment.service.FileService;
 import com.stc.assignment.service.ItemService;
 import com.stc.assignment.service.PermissionGroupService;
 import com.stc.assignment.service.PermissionService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.EntityNotFoundException;
-import javax.validation.Valid;
 import java.io.IOException;
-
+@RequestMapping("/")
 @RestController
 public class ItemController {
     @Autowired
@@ -32,15 +34,15 @@ public class ItemController {
     public ResponseEntity<Item> createSpace(@RequestBody @Valid SpaceFolderRequest spaceRequest){
         Item item = new Item(ItemType.SPACE,spaceRequest.getName(),permissionGroupService.getGroupById(spaceRequest.getPermissionGroup()),null);
         itemService.createItem(item);
-        return new ResponseEntity<Item>(HttpStatus.OK);
+        return new ResponseEntity<Item>(item,HttpStatus.OK);
     }
     @PostMapping("/spaces/{spaceId}/folders")
-    public ResponseEntity createFolder(@RequestBody @Valid SpaceFolderRequest folderRequest, @PathVariable Long spaceId)throws EntityNotFoundException {
+    public ResponseEntity<Item> createFolder(@RequestBody  @Valid SpaceFolderRequest folderRequest, @PathVariable Long spaceId)throws EntityNotFoundException {
         Item parent = itemService.findItemById(spaceId);
         if(!permissionService.havePermissionToEdit(folderRequest.getUserEmail(),parent.getPermissionGroup().getId())) throw new PermissionDeniedException();
         Item folderItem = new Item(ItemType.FOLDER,folderRequest.getName(),permissionGroupService.getGroupById(folderRequest.getPermissionGroup()),spaceId);
         itemService.createItem(folderItem );
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<Item>(folderItem,HttpStatus.OK);
     }
     @PostMapping("/spaces/{spaceId}/folders/{folderId}/files")
     public ResponseEntity<File> createFile(
@@ -57,6 +59,17 @@ public class ItemController {
         itemService.createItem(fileItem);
         File file1 = new File(file.getBytes(),fileItem);
         fileService.createFile(file1);
-        return new ResponseEntity<File>(HttpStatus.OK);
+        return new ResponseEntity<File>(file1,HttpStatus.OK);
+    }
+    @GetMapping("/files/{fileId}/download/{userEmail}")
+    public ResponseEntity<byte[]> downloadFile(@PathVariable Long fileId,@PathVariable String userEmail) {
+
+        File file = fileService.getFileById(fileId);
+        if(!permissionService.havePermissionToEdit(userEmail,file.getItem().getPermissionGroup().getId())) throw new PermissionDeniedException();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDisposition(ContentDisposition.attachment().filename(file.getItem().getName()).build());
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+
+        return new ResponseEntity<>(file.getFile(), headers, HttpStatus.OK);
     }
 }

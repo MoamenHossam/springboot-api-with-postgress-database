@@ -1,6 +1,7 @@
 package com.stc.assignment.model;
 
-import javax.validation.constraints.*;
+
+import jakarta.validation.constraints.*;
 
 public class SpaceFolderRequest {
 

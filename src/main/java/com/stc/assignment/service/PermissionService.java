@@ -13,4 +13,8 @@ public class PermissionService {
         if(permissionRepository.haveEditAccess(email,groupId)!=null)return true;
         else return false;
     }
+    public Boolean havePermissionToView(String email,Long groupId){
+        if(permissionRepository.haveEditAccess(email,groupId)!=null)return true;
+        else return false;
+    }
 }
