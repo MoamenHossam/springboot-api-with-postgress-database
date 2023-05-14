@@ -8,8 +8,7 @@ import com.stc.assignment.service.ItemService;
 import com.stc.assignment.service.PermissionGroupService;
 import com.stc.assignment.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -58,5 +57,16 @@ public class ItemController {
         File file1 = new File(file.getBytes(),fileItem);
         fileService.createFile(file1);
         return new ResponseEntity<File>(HttpStatus.OK);
+    }
+    @GetMapping("/files/{fileId}/download/{userEmail}")
+    public ResponseEntity<byte[]> downloadFile(@PathVariable Long fileId,@PathVariable String userEmail) {
+
+        File file = fileService.getFileById(fileId);
+        if(!permissionService.havePermissionToEdit(userEmail,file.getItem().getPermissionGroup().getId())) throw new PermissionDeniedException();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDisposition(ContentDisposition.attachment().filename(file.getItem().getName()).build());
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+
+        return new ResponseEntity<>(file.getFile(), headers, HttpStatus.OK);
     }
 }

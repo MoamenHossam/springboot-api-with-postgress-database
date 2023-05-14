@@ -9,4 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface PermissionRepository extends JpaRepository<Permission,Long> {
     @Query(value="select * from permission p where p.user_email= :userEmail and p.group_id= :group_id and permission_level = 'EDIT'", nativeQuery=true)
     Permission haveEditAccess(String userEmail,Long group_id);
+
+    @Query(value="select * from permission p where p.user_email= :userEmail and p.group_id= :group_id ", nativeQuery=true)
+    Permission haveViewAccess(String userEmail,Long group_id);
 }
