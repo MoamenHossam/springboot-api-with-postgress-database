@@ -1,0 +1,19 @@
+type Query{
+    files: [File]
+    authorizedFiles(userEmail: String): [File]
+}
+type File{
+    id: ID!
+    item: Item!
+}
+type Item{
+    id: ID!
+    name: String
+    type: String
+    parentID: Int
+    permissionGroup: PermissionGroup
+}
+type PermissionGroup{
+    id:ID!
+    groupName: String
+}
